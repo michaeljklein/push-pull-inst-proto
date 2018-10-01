@@ -1,0 +1,79 @@
+-- This file has been generated from package.yaml by hpack version 0.28.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 810ed7324407500c0241e94583640e07acde2711248bdf06c0debc85b9e53b9c
+
+name:           push-pull-inst-proto
+version:        0.1.0.0
+description:    Please see the README on Github at <https://github.com/michaeljklein/push-pull-inst-proto#readme>
+homepage:       https://github.com/michaeljklein/push-pull-inst-proto#readme
+bug-reports:    https://github.com/michaeljklein/push-pull-inst-proto/issues
+author:         Michael Klein
+maintainer:     lambdamichael@gmail.com
+copyright:      2018 Michael Klein
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+extra-source-files:
+    ChangeLog.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/michaeljklein/push-pull-inst-proto
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_push_pull_inst_proto
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , comonad
+    , containers
+    , free
+    , profunctors
+    , transformers
+    , unordered-containers
+  default-language: Haskell2010
+
+executable push-pull-inst-proto-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_push_pull_inst_proto
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , comonad
+    , containers
+    , free
+    , profunctors
+    , push-pull-inst-proto
+    , transformers
+    , unordered-containers
+  default-language: Haskell2010
+
+test-suite push-pull-inst-proto-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_push_pull_inst_proto
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , comonad
+    , containers
+    , free
+    , profunctors
+    , push-pull-inst-proto
+    , transformers
+    , unordered-containers
+  default-language: Haskell2010
