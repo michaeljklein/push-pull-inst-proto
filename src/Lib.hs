@@ -27,12 +27,16 @@ import Data.Tree
 class (Functor f, Functor g) => Push f g where
   part :: f (g a)     -> f (f (g a))
   pver :: f (f (g a)) -> f (g (f a))
+
+  -- | @`push` = `pver` . `part`@
   push :: f (g a)     -> f (g (f a))
   push = pver . part
 
 class Pull f g where
   draw :: f (g (f a)) -> f (f (g a))
   bond :: f (f (g a)) -> f (g a)
+
+  -- | @`pull` = `bond` . `draw`@
   pull :: f (g (f a)) -> f (g a)
   pull = bond . draw
 
@@ -173,19 +177,22 @@ fib3 n = (\(_,_,_,w)->w)$foldr matMult (1, 0, 0, 1) $ zipWith (\m y -> if y == 0
 
     matMult (a, b, c, d) (e, f, g, h) = (a * e + b * g, a * f + b * h, c * e + d * g, c * f + d * h)
 
+-- | One implementation of the collatz function
 collatz0 0 = 0
 collatz0 1 = 1
 collatz0 n | even n = 1 + collatz0 (div n 2)
            | True   = 1 + collatz0 (3*n+1)
 
-
+-- | Another implementation of the collatz function,
+-- using case and `mod` instead of `even`
 collatz1 0 = 0
 collatz1 1 = 1
 collatz1 n = case mod n 2 of
                0 -> 1 + collatz1 (div n 2)
                _ -> 2 + collatz1 (div (3*n+1) 2)
 
-
+-- | `collatz1` using @`divMod` n 4@ to expand the number of cases
+-- covered in a single @case@ statement
 collatz2 0 = 0
 collatz2 1 = 1
 collatz2 n = case divMod n 4 of
@@ -247,11 +254,13 @@ instance Push Tree Maybe where
   pver :: Tree (Tree (Maybe a)) -> Tree (Maybe (Tree a))
   pver = fmap sequence
 
-
+-- | Drop all subtrees whose root is `Nothing`
 noNothing :: Tree (Maybe a) -> Tree (Maybe a)
 noNothing (Node Nothing _) = Node Nothing []
 noNothing (Node x xs) = Node x (map noNothing . filter (isJust . extract) $ xs)
 
+-- | Another implementation of `noNothing`, this one specialized
+-- to precomposition with `Tree`
 noNothing2 :: Tree (Tree (Maybe a)) -> Tree (Tree (Maybe a))
 noNothing2 (Node (Node Nothing _) _) = Node (Node Nothing []) []
 noNothing2 (Node x xs) = Node (noNothing x) (map noNothing2 . filter (isJust . extract . extract) $ xs)
@@ -259,6 +268,7 @@ noNothing2 (Node x xs) = Node (noNothing x) (map noNothing2 . filter (isJust . e
 -- noNothing :: Forest (Maybe a) -> Forest (Maybe a)
 -- noNothing = map (forestMap noNothing) . filter (isJust . extract)
 
+-- | Map over the top-level `Forest` in a `Tree`
 forestMap :: (Forest a -> Forest a) -> Tree a -> Tree a
 forestMap f (Node x xs) = Node x (f xs)
 
@@ -299,7 +309,7 @@ instance Alternative g => Push [] (Cofree g) where
 -- f (a, g a) -> f (f (a, g a))
 
 
-
+-- | Is the input `Pure`?
 isPure :: Free f a -> Bool
 isPure (Pure _) = True
 isPure  _       = False
