@@ -62,3 +62,8 @@ Several recursive functions in different organizations of their recursive calls 
 in an attempt to model the source code transformations provided by `Push`, `Pull`,
 and compare their respective performance.
 
+
+# Docs
+
+Haddock-generated documentation is available [here](https://michaeljklein.github.io/push-pull-inst-proto/)
+
